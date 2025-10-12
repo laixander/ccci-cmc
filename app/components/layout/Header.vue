@@ -45,7 +45,7 @@ watch(() => route.fullPath, () => {
             <USlideover side="left" class="lg:hidden" v-model:open="open">
                 <UButton icon="i-lucide-menu" color="neutral" variant="ghost" />
                 <template #content>
-                    <Sidebar slideover :collapsed="collapsed" :items="items" @close="open = false" />
+                    <Sidebar slideover :items="items" @close="open = false" />
                 </template>
             </USlideover>
 

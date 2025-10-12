@@ -1,5 +1,5 @@
 export interface CollapsibleProps {
-    collapsed: boolean
+    collapsed?: boolean
 }
 
 export interface MenuItemsProps {

@@ -2,7 +2,7 @@
 </script>
 <template>
     <Page 
-        title="Dashboard"
+        title="Inner Page"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     >
         <Block>
