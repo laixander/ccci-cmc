@@ -9,7 +9,7 @@
                 <section class="space-y-4">
                     <div class="flex items-center gap-3">
                         <div
-                            class="bg-success flex items-center justify-center font-semibold text-white w-10 h-10 rounded-xl">
+                            class="bg-success dark:bg-success-900 flex items-center justify-center font-semibold text-white w-10 h-10 rounded-xl">
                             1</div>
                         <div>
                             <div class="font-semibold">Workspace</div>
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <UInput v-model="apiKey" type="text" placeholder="API Key" size="lg" class="w-full" />
+                        <UInput v-model="apiKey" placeholder="API Key" variant="soft" size="lg" class="w-full" />
                         <UButton label="Fetch Workspaces" icon="i-lucide-refresh-cw" size="lg"
                             @click="fetchWorkspaces" />
                     </div>
@@ -30,10 +30,10 @@
                 <USeparator v-if="selectedWorkspace" />
 
                 <!-- 2. Search User -->
-                <section v-if="selectedWorkspace">
+                <section class="space-y-4" v-if="selectedWorkspace">
                     <div class="flex items-center gap-3">
                         <div
-                            class="bg-success flex items-center justify-center font-semibold text-white w-10 h-10 rounded-xl">
+                            class="bg-success dark:bg-success-900 flex items-center justify-center font-semibold text-white w-10 h-10 rounded-xl">
                             2</div>
                         <div>
                             <div class="font-semibold">User</div>
@@ -42,12 +42,12 @@
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <UInput v-model="userQuery" type="text" placeholder="Enter name or email" size="lg" class="w-full" />
+                        <UInput v-model="userQuery" placeholder="Enter name or email" variant="soft" size="lg" class="w-full" />
                         <UButton label="Search" icon="i-lucide-search" size="lg"
                             @click="searchUser" />
                     </div>
 
-                    <div class="space-y-1">
+                    <div class="space-y-2 space-x-2">
                         <div v-if="loadingUsers" class="text-gray-500">Loading users...</div>
 
                         <UButton v-for="user in searchResults" :key="user.id" @click="selectUser(user)" icon="i-lucide-user" variant="subtle" size="lg">
@@ -60,44 +60,83 @@
                     </div>
                 </section>
 
+                <USeparator v-if="selectedUser" />
+
                 <!-- 3. Selected User & Date Range -->
-                <section v-if="selectedUser">
-                    <h2 class="font-semibold text-lg">Selected User: {{ selectedUser.name }} ({{ selectedUser.email }})
-                    </h2>
-                    <div class="mt-2 flex flex-wrap gap-3 items-center">
+                <section class="space-y-4" v-if="selectedUser">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="bg-success dark:bg-success-900 flex items-center justify-center font-semibold text-white w-10 h-10 rounded-xl">
+                            3</div>
+                        <div>
+                            <div class="font-semibold">Date Range</div>
+                            <div class="text-muted text-sm">Set up the date range of the time entries</div>
+                        </div>
+                    </div>
+                    <div class="text-sm text-success">
+                        Selected User: {{ selectedUser.name }} ({{ selectedUser.email }})
+                    </div>
+                    <!-- <div class="mt-2 flex flex-wrap gap-3 items-center">
                         <label>Start Date:</label>
                         <input v-model="startDate" type="date" class="border p-1 rounded" />
                         <label>End Date:</label>
                         <input v-model="endDate" type="date" class="border p-1 rounded" />
                         <button @click="fetchTimeEntries" class="bg-blue-500 text-white px-3 py-1 rounded">Fetch Time
                             Entries</button>
+                    </div> -->
+                    <div class="flex items-end gap-6">
+                        <UFormField label="Start Date:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                            <UInput v-model="startDate" type="date" variant="soft" />
+                        </UFormField>
+                        <UFormField label="End Date:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                            <UInput v-model="endDate" type="date" variant="soft" />
+                        </UFormField>
+                        <UButton label="Fetch Time Entries" icon="i-lucide-download" size="lg"
+                            @click="fetchTimeEntries" />
                     </div>
-                    <p class="text-green-600 mt-2">{{ timeFeedback }}</p>
+                    <div class="text-sm text-success">{{ timeFeedback }}</div>
                 </section>
 
-                <!-- 4. Time Entries Preview -->
-                <section v-if="entries.length > 0">
-                    <h2 class="font-semibold text-lg">3. Time Entries Preview</h2>
+                <USeparator v-if="entries.length > 0" />
 
-                    <!-- Add Entry -->
-                    <div class="border p-3 rounded mb-4">
-                        <h3 class="font-semibold mb-2">Add New Entry</h3>
-                        <div class="flex flex-wrap gap-2 items-center">
-                            <label>Date:</label>
-                            <input v-model="newEntry.date" type="date" class="border p-1 rounded" />
-                            <label>Description:</label>
-                            <input v-model="newEntry.desc" type="text" placeholder="Description"
-                                class="border p-1 rounded w-60" />
-                            <label>Start:</label>
-                            <input v-model="newEntry.start" type="time" class="border p-1 rounded" />
-                            <label>End:</label>
-                            <input v-model="newEntry.end" type="time" class="border p-1 rounded" />
-                            <button @click="addEntry" class="bg-green-500 text-white px-3 py-1 rounded">Add</button>
+                <!-- 4. Time Entries Preview -->
+                <section class="space-y-4" v-if="entries.length > 0">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="bg-success dark:bg-success-900 flex items-center justify-center font-semibold text-white w-10 h-10 rounded-xl">
+                            4</div>
+                        <div>
+                            <div class="font-semibold">Time Entries</div>
+                            <div class="text-muted text-sm">Preview of time entries based on the set date range</div>
                         </div>
                     </div>
 
+                    <!-- Add Entry -->
+                    <UCard :ui="{body: 'sm:p-4'}">
+                        <div class="flex items-center gap-2 mb-2">
+                            <UIcon name="i-lucide-pencil-line" class="size-4 shrink-0" />
+                            <span class="font-semibold text-sm">Add New Entry</span>
+                        </div>
+                        <div class="flex items-end gap-6">
+                            <UFormField label="Date:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                                <UInput v-model="newEntry.date" type="date" variant="soft" />
+                            </UFormField>
+                            <UFormField label="Description:" size="lg" :ui="{root: 'flex items-center gap-2 w-full', container: 'mt-0 w-full'}">
+                                <UInput v-model="newEntry.desc" placeholder="Enter description" variant="soft" class="w-full" />
+                            </UFormField>
+                            <UFormField label="Start:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                                <UInput v-model="newEntry.start" type="time" variant="soft" />
+                            </UFormField>
+                            <UFormField label="End:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                                <UInput v-model="newEntry.end" type="time" variant="soft" />
+                            </UFormField>
+                            <UButton label="Add" icon="i-lucide-plus" size="lg" color="success"
+                            @click="addEntry" />
+                        </div>
+                    </UCard>
+
                     <!-- Table -->
-                    <div v-html="previewHtml"></div>
+                    <div v-html="previewHtml" class="dark:text-gray-900 dark:bg-white rounded-lg overflow-hidden text-sm"></div>
                 </section>
 
                 <!-- 5. Export -->
@@ -316,14 +355,14 @@ const previewHtml = computed(() => {
     if (rows.length === 0) return '<p>No entries.</p>'
     let html = `
     <table border="1" style="border-collapse:collapse;width:100%;text-align:center;">
-      <tr><th colspan="5" style="background:#E2EFDA;">Weekly Accomplishment Report</th></tr>
-      <tr><th colspan="5" style="background:#E2EFDA;">Period covered: ${startDate.value || 'N/A'} - ${endDate.value || 'N/A'}</th></tr>
+      <tr><th colspan="5" style="background:#E2EFDA; padding:6px">Weekly Accomplishment Report</th></tr>
+      <tr><th colspan="5" style="background:#E2EFDA; padding:6px">Period covered: ${startDate.value || 'N/A'} - ${endDate.value || 'N/A'}</th></tr>
       <tr style="background:#E2EFDA;">
-        <th>Date Entered</th><th>Description</th><th>Start Time</th><th>End Time</th><th>Total Time</th>
+        <th style="padding:6px">Date Entered</th><th style="padding:6px">Description</th><th style="padding:6px">Start Time</th><th style="padding:6px">End Time</th><th style="padding:6px">Total Time</th>
       </tr>`
     for (const r of rows) {
         const bg = r.desc.includes('Total for') ? ' style="background:#E2EFDA;"' : ''
-        html += `<tr${bg}><td>${r.date}</td><td>${r.desc}</td><td>${r.start}</td><td>${r.end}</td><td>${r.total}</td></tr>`
+        html += `<tr${bg}><td style="padding:6px">${r.date}</td><td style="padding:6px">${r.desc}</td><td style="padding:6px">${r.start}</td><td style="padding:6px">${r.end}</td><td style="padding:6px">${r.total}</td></tr>`
     }
     html += '</table>'
     return html
