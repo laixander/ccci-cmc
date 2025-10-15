@@ -21,7 +21,8 @@
                         <UButton label="Fetch Workspaces" icon="i-lucide-refresh-cw" size="lg"
                             @click="fetchWorkspaces" />
                     </div>
-                    <UButton v-for="ws in workspaces" :key="ws.id" @click="selectWorkspace(ws)" icon="i-lucide-landmark" variant="subtle" size="lg">
+                    <UButton v-for="ws in workspaces" :key="ws.id" @click="selectWorkspace(ws)" icon="i-lucide-landmark"
+                        variant="subtle" size="lg">
                         {{ ws.name }}
                     </UButton>
                     <div class="text-sm text-success">{{ feedback }}</div>
@@ -42,15 +43,16 @@
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <UInput v-model="userQuery" placeholder="Enter name or email" variant="soft" size="lg" class="w-full" />
-                        <UButton label="Search" icon="i-lucide-search" size="lg"
-                            @click="searchUser" />
+                        <UInput v-model="userQuery" placeholder="Enter name or email" variant="soft" size="lg"
+                            class="w-full" />
+                        <UButton label="Search" icon="i-lucide-search" size="lg" @click="searchUser" />
                     </div>
 
                     <div class="space-y-2 space-x-2">
                         <div v-if="loadingUsers" class="text-gray-500">Loading users...</div>
 
-                        <UButton v-for="user in searchResults" :key="user.id" @click="selectUser(user)" icon="i-lucide-user" variant="subtle" size="lg">
+                        <UButton v-for="user in searchResults" :key="user.id" @click="selectUser(user)"
+                            icon="i-lucide-user" variant="subtle" size="lg">
                             {{ user.name }} ({{ user.email }})
                         </UButton>
 
@@ -85,10 +87,12 @@
                             Entries</button>
                     </div> -->
                     <div class="flex items-end gap-6">
-                        <UFormField label="Start Date:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                        <UFormField label="Start Date:" size="lg"
+                            :ui="{ root: 'flex items-center gap-2', container: 'mt-0' }">
                             <UInput v-model="startDate" type="date" variant="soft" />
                         </UFormField>
-                        <UFormField label="End Date:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                        <UFormField label="End Date:" size="lg"
+                            :ui="{ root: 'flex items-center gap-2', container: 'mt-0' }">
                             <UInput v-model="endDate" type="date" variant="soft" />
                         </UFormField>
                         <UButton label="Fetch Time Entries" icon="i-lucide-download" size="lg"
@@ -112,48 +116,61 @@
                     </div>
 
                     <!-- Add Entry -->
-                    <UCard :ui="{body: 'sm:p-4'}">
+                    <UCard :ui="{ body: 'sm:p-4' }">
                         <div class="flex items-center gap-2 mb-2">
                             <UIcon name="i-lucide-pencil-line" class="size-4 shrink-0" />
                             <span class="font-semibold text-sm">Add New Entry</span>
                         </div>
                         <div class="flex items-end gap-6">
-                            <UFormField label="Date:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                            <UFormField label="Date:" size="lg"
+                                :ui="{ root: 'flex items-center gap-2', container: 'mt-0' }">
                                 <UInput v-model="newEntry.date" type="date" variant="soft" />
                             </UFormField>
-                            <UFormField label="Description:" size="lg" :ui="{root: 'flex items-center gap-2 w-full', container: 'mt-0 w-full'}">
-                                <UInput v-model="newEntry.desc" placeholder="Enter description" variant="soft" class="w-full" />
+                            <UFormField label="Description:" size="lg"
+                                :ui="{ root: 'flex items-center gap-2 w-full', container: 'mt-0 w-full' }">
+                                <UInput v-model="newEntry.desc" placeholder="Enter description" variant="soft"
+                                    class="w-full" />
                             </UFormField>
-                            <UFormField label="Start:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                            <UFormField label="Start:" size="lg"
+                                :ui="{ root: 'flex items-center gap-2', container: 'mt-0' }">
                                 <UInput v-model="newEntry.start" type="time" variant="soft" />
                             </UFormField>
-                            <UFormField label="End:" size="lg" :ui="{root: 'flex items-center gap-2', container: 'mt-0'}">
+                            <UFormField label="End:" size="lg"
+                                :ui="{ root: 'flex items-center gap-2', container: 'mt-0' }">
                                 <UInput v-model="newEntry.end" type="time" variant="soft" />
                             </UFormField>
-                            <UButton label="Add" icon="i-lucide-plus" size="lg" color="success"
-                            @click="addEntry" />
+                            <UButton label="Add" icon="i-lucide-plus" size="lg" color="success" @click="addEntry" />
                         </div>
                     </UCard>
 
                     <!-- Table -->
-                    <div v-html="previewHtml" class="dark:text-gray-900 dark:bg-white rounded-lg overflow-hidden text-sm"></div>
+                    <UCard :ui="{body:'p-0 sm:p-0'}">
+                        <div v-html="previewHtml" class="dark:text-gray-900 dark:bg-white text-sm"></div>
+                    </UCard>
                 </section>
 
+                <USeparator v-if="entries.length > 0" />
+
                 <!-- 5. Export -->
-                <section v-if="entries.length > 0">
-                    <h2 class="font-semibold text-lg">4. Export Displayed Data</h2>
-                    <div class="flex flex-wrap gap-2 mt-2 items-center">
-                        <label>Export File Name:</label>
-                        <input v-model="exportFileName" type="text" class="border p-1 rounded w-[600px]" />
-                        <button @click="exportExcel" class="bg-emerald-600 text-white px-3 py-1 rounded">
-                            Export to Excel
-                        </button>
+                <section class="space-y-4" v-if="entries.length > 0">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="bg-success dark:bg-success-900 flex items-center justify-center font-semibold text-white w-10 h-10 rounded-xl">
+                            5</div>
+                        <div>
+                            <div class="font-semibold">Export</div>
+                            <div class="text-muted text-sm">Export displayed data</div>
+                        </div>
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <UFormField label="Export File Name:" size="lg"
+                            :ui="{ root: 'flex items-center gap-2 w-full', container: 'mt-0 w-full', label: 'whitespace-nowrap' }">
+                            <UInput v-model="exportFileName" variant="soft" class="w-full" />
+                        </UFormField>
+                        <UButton label="Export to Excel" icon="i-lucide-file-spreadsheet" size="lg" color="success" @click="exportExcel" />
                     </div>
                 </section>
             </div>
-
-
-
         </Block>
     </Page>
 </template>
